@@ -4,15 +4,15 @@ function ListarClientes($vConexion) {
     $Listado=array();
 
     $SQL = "SELECT c.NOMBRE, c.APELLIDO, c.DNI_CLI, c.CIUDAD, p.Provincia_desc, c.contacto, c.Disponibilidad, c.Email
-    FROM cliente c, provincia p 
-    WHERE p.id_prov=c.id_prov
-    ORDER BY c.apellido ASC";
+            FROM cliente c
+            JOIN provincia p ON p.id_prov = c.id_prov
+            ORDER BY c.apellido ASC";
 
-     $rs = mysqli_query($vConexion, $SQL);
+     $rs = $vConexion->query($SQL);
         
     
      $i=0;
-    while ($data = mysqli_fetch_array($rs)) {
+    while ($data = $rs->fetch_assoc()) {
             $Listado[$i]['NOM_CLI'] = $data['NOMBRE'];
             $Listado[$i]['APE_CLI'] = $data['APELLIDO'];
             $Listado[$i]['DNI_CLI'] = $data['DNI_CLI'];
@@ -29,8 +29,4 @@ function ListarClientes($vConexion) {
     return $Listado;
 
 }
-
-
-
-
 ?>

@@ -1,7 +1,7 @@
 <?php
 // 1. Incluir archivos y establecer conexión
-require_once 'funciones/conexion.php';
-$MiConexion = ConexionBD();
+require_once 'conexion.php';
+$MiConexion = $conexion;
 require_once 'funciones/autenticacion.php';
 require_once 'funciones/selectprovincia.php';
 $ListadoProvincia = ListarProvincia($MiConexion);
