@@ -1,40 +1,6 @@
-<?php  
-require_once 'funciones/conexion.php';
-$MiConexion=ConexionBD();
-require_once 'funciones/autenticacion.php';
-
-
-require_once 'funciones/selectMarca.php';
-$ListadoMarca = ListarMarca($MiConexion);
-$CantidadMarca= count($ListadoMarca);
-
-require_once 'funciones/selectProveedor.php';
-$ListadoProv = ListarProve($MiConexion);
-$CantidadProv= count($ListadoProv);
-
-require_once 'funciones/selectTipoProd.php';
-$ListadoTipo = ListarTipoProd($MiConexion);
-$CantidadTipo= count($ListadoTipo);
-
-require_once 'funciones/mostrarproducto.php';
-$ListadoProd = ListarProd($MiConexion);
-$CantidadProd= count($ListadoProd);
-
-
-$query = "SELECT DISTINCT marca FROM marca";
-$result = $conexion->query($query);
-
-$ListadoMarcas = [];
-if ($result) {
-    while ($row = $result->fetch_assoc()) {
-        $ListadoMarcas[] = $row['marca'];
-    }
-}
-
-require_once 'funciones/insertProd.php';
-
-require_once'funciones/accionesProd.php';
-
+<?php
+session_start();
+require_once 'productosController.php';
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -157,8 +123,6 @@ if (!empty($mensajeE)) {
     });
 </script>
 
-
-
 							<div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable">
 								
 								<div class="mdl-textfield__expandable-holder">
@@ -168,28 +132,29 @@ if (!empty($mensajeE)) {
 							</div>
 						</form>
 						
-						<div class="product-container">
+                        <div class="product-container">
     <?php 
-    for ($i = 0; $i < $CantidadProd; $i++) { 
-        if ($ListadoProd[$i]['DISPO_P'] != 0) { ?>
+    foreach ($ListadoProd as $producto) { 
+        if ($producto['DISPO_P'] != 0) { ?>
             <div class="product-card mdl-card mdl-shadow--2dp">
-                <h6 class="text-center tittles"><?php echo $ListadoProd[$i]['IDPROD']; ?></h6>
-                <h4 class="text-center tittles"><?php echo $ListadoProd[$i]['PRODUCTO']; ?></h4>
+                <h6 class="text-center tittles"><?php echo htmlspecialchars($producto['IDPROD']); ?></h6>
+                <h4 class="text-center tittles"><?php echo htmlspecialchars($producto['PRODUCTO']); ?></h4>
                 <div class="mdl-card__title">
-                    <img src="<?php echo $ListadoProd[$i]['IMG']; ?>"  alt="product" class="img-responsive">
+                    <img src="<?php echo htmlspecialchars($producto['IMG']); ?>" alt="product" class="img-responsive">
                 </div>
                 <div class="mdl-card__supporting-text">
-                    <small>Marca: <?php echo $ListadoProd[$i]['MARCA']; ?></small><br>
-                     <small>Modelo: <?php echo $ListadoProd[$i]['MODELO']; ?></small><br>
-                    <small>Producto: <?php echo $ListadoProd[$i]['TIPOPROD']; ?></small><br>
-                     <small>Precio: <?php echo $ListadoProd[$i]['PRECIOV']; ?></small><br>
-                      <small>Material:  <?php echo $ListadoProd[$i]['MATERIAL']; ?></small><br>
-                      <small>Dato: <?php echo $ListadoProd[$i]['DESC']; ?></small><br>
+                    <small>Marca: <?php echo htmlspecialchars($producto['MARCA']); ?></small><br>
+                    <small>Modelo: <?php echo htmlspecialchars($producto['MODELO']); ?></small><br>
+                    <small>Producto: <?php echo htmlspecialchars($producto['TIPOPROD']); ?></small><br>
+                    <small>Precio: <?php echo htmlspecialchars($producto['PRECIOV']); ?></small><br>
+                    <small>Material: <?php echo htmlspecialchars($producto['MATERIAL']); ?></small><br>
+                    <small>Dato: <?php echo htmlspecialchars($producto['DESC']); ?></small><br>
                 </div>
             </div>
-        <?php } 
+        <?php }
     } ?>
-									</div>
+</div>
+
 								</div>
 							</div>
 						</div>

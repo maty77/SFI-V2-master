@@ -1,5 +1,4 @@
 <?php
-require_once 'clientesController.php';
 session_start();
 require_once 'clientesController.php';
 ?>
